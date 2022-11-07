@@ -8,30 +8,32 @@ import java.util.List;
 
 public class Game2048 extends JPanel
 {
-    private static final Color BG_COLOR = new Color(0xbbada0);
+    private static final Color BG_COLOR = new Color(0x66ffff);
     private static final String FONT_NAME = "Arial";
-    private static final int TILE_SIZE = 64;
+    private static final int TILE_SIZE = 60;
     private static final int TILES_MARGIN = 16;
 
     private Tile[] myTiles;
-    boolean myWin = false;
-    boolean myLose = false;
-    int myScore = 0;
+    boolean Win = false;
+    boolean Lose = false;
+    int Score = 0;
 
-    public Game2048() {
-        setPreferredSize(new Dimension(340, 400));
+    public Game2048()
+    {
+        //setPreferredSize(new Dimension());
         setFocusable(true);
         addKeyListener(new KeyAdapter() {
             @Override
+            //possible key moves are up,down,left,right and esc.
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     resetGame();
                 }
                 if (!canMove()) {
-                    myLose = true;
+                    Lose = true;
                 }
 
-                if (!myWin && !myLose) {
+                if (!Win && !Lose) {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_LEFT:
                             left();
@@ -48,8 +50,8 @@ public class Game2048 extends JPanel
                     }
                 }
 
-                if (!myWin && !canMove()) {
-                    myLose = true;
+                if (!Win && !canMove()) {
+                    Lose = true;
                 }
 
                 repaint();
@@ -59,9 +61,9 @@ public class Game2048 extends JPanel
     }
 
     public void resetGame() {
-        myScore = 0;
-        myWin = false;
-        myLose = false;
+        Score = 0;
+        Win = false;
+        Lose = false;
         myTiles = new Tile[4 * 4];
         for (int i = 0; i < myTiles.length; i++) {
             myTiles[i] = new Tile();
@@ -208,10 +210,10 @@ public class Game2048 extends JPanel
             int num = oldLine[i].value;
             if (i < 3 && oldLine[i].value == oldLine[i + 1].value) {
                 num *= 2;
-                myScore += num;
+                Score += num;
                 int ourTarget = 2048;
                 if (num == ourTarget) {
-                    myWin = true;
+                    Win = true;
                 }
                 i++;
             }
@@ -244,6 +246,7 @@ public class Game2048 extends JPanel
     }
 
     @Override
+    //paint tiles one by one
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(BG_COLOR);
@@ -278,26 +281,26 @@ public class Game2048 extends JPanel
         if (value != 0)
             g.drawString(s, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
 
-        if (myWin || myLose) {
+        if (Win || Lose) {
             g.setColor(new Color(255, 255, 255, 30));
             g.fillRect(0, 0, getWidth(), getHeight());
             g.setColor(new Color(78, 139, 202));
             g.setFont(new Font(FONT_NAME, Font.BOLD, 48));
-            if (myWin) {
+            if (Win) {
                 g.drawString("You won!", 68, 150);
             }
-            if (myLose) {
+            if (Lose) {
                 g.drawString("Game over!", 50, 130);
                 g.drawString("You lose!", 64, 200);
             }
-            if (myWin || myLose) {
+            if (Win || Lose) {
                 g.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
                 g.setColor(new Color(128, 128, 128, 128));
                 g.drawString("Press ESC to play again", 80, getHeight() - 40);
             }
         }
         g.setFont(new Font(FONT_NAME, Font.PLAIN, 18));
-        g.drawString("Score: " + myScore, 200, 365);
+        g.drawString("Score: " + Score, 200, 365);
 
     }
 
@@ -320,25 +323,26 @@ public class Game2048 extends JPanel
             return value == 0;
         }
 
+        //set color for content on tile
         public Color getForeground() {
-            return value < 16 ? new Color(0x776e65) :  new Color(0xf9f6f2);
+            return value < 16 ? new Color(0x999999) :  new Color(0xffffff);
         }
 
         public Color getBackground() {
             switch (value) {
-                case 2:    return new Color(0xeee4da);
-                case 4:    return new Color(0xede0c8);
-                case 8:    return new Color(0xf2b179);
-                case 16:   return new Color(0xf59563);
-                case 32:   return new Color(0xf67c5f);
-                case 64:   return new Color(0xf65e3b);
-                case 128:  return new Color(0xedcf72);
-                case 256:  return new Color(0xedcc61);
-                case 512:  return new Color(0xedc850);
-                case 1024: return new Color(0xedc53f);
-                case 2048: return new Color(0xedc22e);
+                case 2:    return new Color(0xffff00);
+                case 4:    return new Color(0xffcc00);
+                case 8:    return new Color(0xff6600);
+                case 16:   return new Color(0xff0000);
+                case 32:   return new Color(0x00ff99);
+                case 64:   return new Color(0x00ffff);
+                case 128:  return new Color(0x0099ff);
+                case 256:  return new Color(0x0000ff);
+                case 512:  return new Color(0x000099);
+                case 1024: return new Color(0x006600);
+                case 2048: return new Color(0x66ff33);
             }
-            return new Color(0xcdc1b4);
+            return new Color(0x660000);
         }
     }
 

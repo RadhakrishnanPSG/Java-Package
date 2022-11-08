@@ -68,6 +68,7 @@ public class Game2048 extends JPanel
         for (int i = 0; i < myTiles.length; i++) {
             myTiles[i] = new Tile();
         }
+        //start the game everytime with 2 tiles
         addTile();
         addTile();
     }
@@ -94,7 +95,8 @@ public class Game2048 extends JPanel
         myTiles = rotate(180);
     }
 
-    public void up() {
+    public void up()
+    {
         myTiles = rotate(270);
         left();
         myTiles = rotate(90);
@@ -110,6 +112,7 @@ public class Game2048 extends JPanel
         return myTiles[x + y * 4];
     }
 
+    //randomly generate a tile "2" or tile "4"
     private void addTile() {
         List<Tile> list = availableSpace();
         if (!availableSpace().isEmpty()) {
@@ -140,8 +143,8 @@ public class Game2048 extends JPanel
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
                 Tile t = tileAt(x, y);
-                if ((x < 3 && t.value == tileAt(x + 1, y).value)
-                        || ((y < 3) && t.value == tileAt(x, y + 1).value)) {
+                if ((x < 3 && t.value == tileAt(x + 1, y).value) || ((y < 3) && t.value == tileAt(x, y + 1).value))
+                {
                     return true;
                 }
             }
@@ -152,7 +155,8 @@ public class Game2048 extends JPanel
     private boolean compare(Tile[] line1, Tile[] line2) {
         if (line1 == line2) {
             return true;
-        } else if (line1.length != line2.length) {
+        }
+        else if (line1.length != line2.length) {
             return false;
         }
 
@@ -185,7 +189,7 @@ public class Game2048 extends JPanel
         }
         return newTiles;
     }
-
+    
     private Tile[] moveLine(Tile[] oldLine) {
         LinkedList<Tile> l = new LinkedList<Tile>();
         for (int i = 0; i < 4; i++) {
@@ -211,8 +215,8 @@ public class Game2048 extends JPanel
             if (i < 3 && oldLine[i].value == oldLine[i + 1].value) {
                 num *= 2;
                 Score += num;
-                int ourTarget = 2048;
-                if (num == ourTarget) {
+                int Target = 2048;
+                if (num == Target) {
                     Win = true;
                 }
                 i++;
@@ -268,7 +272,9 @@ public class Game2048 extends JPanel
         g.setColor(tile.getBackground());
         g.fillRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 14, 14);
         g.setColor(tile.getForeground());
-        final int size = value < 100 ? 36 : value < 1000 ? 32 : 24;
+
+        //reduce font size according to the number of digits
+        final int size = value < 100 ? 40 : value < 513 ? 32 : 24;
         final Font font = new Font(FONT_NAME, Font.BOLD, size);
         g.setFont(font);
 
@@ -300,7 +306,7 @@ public class Game2048 extends JPanel
             }
         }
         g.setFont(new Font(FONT_NAME, Font.PLAIN, 18));
-        g.drawString("Score: " + Score, 200, 365);
+        g.drawString("Score: " + Score, 120, 340);
 
     }
 
@@ -325,7 +331,7 @@ public class Game2048 extends JPanel
 
         //set color for content on tile
         public Color getForeground() {
-            return value < 16 ? new Color(0x999999) :  new Color(0xffffff);
+            return value < 16 ? new Color(0x000000) :  new Color(000000);
         }
 
         public Color getBackground() {
@@ -342,7 +348,7 @@ public class Game2048 extends JPanel
                 case 1024: return new Color(0x006600);
                 case 2048: return new Color(0x66ff33);
             }
-            return new Color(0x660000);
+            return new Color(0xffffff);
         }
     }
 
